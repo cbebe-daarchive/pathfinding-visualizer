@@ -1,0 +1,113 @@
+.node, .node-finish, .node-start, .node-visited, .node-wall, .node-shortest-path {
+  width: 25px;
+  height: 25px;
+  outline: 1px solid #afd8f8;
+}
+
+.node-finish {
+  background-color: red;
+}
+
+.node-start {
+  background-color: green;
+}
+
+.node-visited {
+  -webkit-animation-name: visitedAnimation;
+          animation-name: visitedAnimation;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  -webkit-animation-timing-function: ease-out;
+          animation-timing-function: ease-out;
+  -webkit-animation-delay: 0;
+          animation-delay: 0;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+  -webkit-animation-iteration-count: 1;
+          animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-play-state: running;
+          animation-play-state: running;
+}
+
+.node-wall {
+  background-color: #0c3547;
+}
+
+.node-shortest-path {
+  background-color: #fffe6a;
+}
+
+@-webkit-keyframes visitedAnimation {
+  0% {
+    -webkit-transform: scale(0.3);
+            transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+  }
+  50% {
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+  75% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+@keyframes visitedAnimation {
+  0% {
+    -webkit-transform: scale(0.3);
+            transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+  }
+  50% {
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+  75% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
+}
+
+@-webkit-keyframes shortestPath {
+  0% {
+    -webkit-transform: scale(0.6);
+            transform: scale(0.6);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes shortestPath {
+  0% {
+    -webkit-transform: scale(0.6);
+            transform: scale(0.6);
+  }
+  50% {
+    -webkit-transform: scale(1.2);
+            transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+/*# sourceMappingURL=Node.css.map */
