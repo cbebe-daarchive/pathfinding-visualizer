@@ -2,39 +2,38 @@ import React from "react";
 
 import "./Node.css";
 
-export interface Position {
+export interface Cell {
   row: number;
   col: number;
 }
 
+export enum NodeType {
+  Start,
+  Finish,
+  Wall,
+  Visited,
+  Blank,
+}
+
 interface NodeProps {
-  position: Position;
-  isFinish: boolean;
-  isStart: boolean;
-  isWall: boolean;
+  position: Cell;
+  type: NodeType;
   onMouseUp: () => void;
-  onMouseDown: (position: Position) => void;
-  onMouseEnter: (position: Position) => void;
+  onMouseDown: (position: Cell) => void;
+  onMouseEnter: (position: Cell) => void;
 }
 
 export default function Node(props: NodeProps): JSX.Element {
-  const {
-    position,
-    isFinish,
-    isStart,
-    isWall,
-    onMouseUp,
-    onMouseDown,
-    onMouseEnter,
-  } = props;
+  const { position, type, onMouseUp, onMouseDown, onMouseEnter } = props;
   const { row, col } = position;
-  const extraClassName: string = isFinish
-    ? "-finish"
-    : isStart
-    ? "-start"
-    : isWall
-    ? "-wall"
-    : "";
+  const extraClassName: string =
+    type === NodeType.Start
+      ? "-start"
+      : type === NodeType.Finish
+      ? "-finish"
+      : type === NodeType.Wall
+      ? "-wall"
+      : "";
   return (
     <div
       id={`node-${row}-${col}`}

@@ -2,6 +2,7 @@
   width: 25px;
   height: 25px;
   outline: 1px solid #afd8f8;
+  display: inline-block;
 }
 
 .node-finish {
