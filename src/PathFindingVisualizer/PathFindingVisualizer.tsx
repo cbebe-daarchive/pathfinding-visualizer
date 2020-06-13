@@ -29,9 +29,7 @@ export default function PathFindingVisualizer(): JSX.Element {
     setMouseIsPressed(true);
   };
 
-  const handleMouseUp = () => {
-    setMouseIsPressed(false);
-  };
+  const handleMouseUp = () => setMouseIsPressed(false);
 
   const handleMouseEnter = (position: Cell) => {
     if (!mouseIsPressed) return;
@@ -57,6 +55,21 @@ export default function PathFindingVisualizer(): JSX.Element {
       return NodeType.Blank;
   };
 
+  const createRow = (row: Array<GridNode>, rowIdx: number): JSX.Element => (
+    <div key={rowIdx}>
+      {row.map((node: GridNode, nodeIdx: number) => (
+        <Node
+          key={nodeIdx}
+          position={node.position}
+          type={node.type}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseEnter={handleMouseEnter}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <>
       <button onClick={() => setGrid(getInitialGrid)}>Clear Grid</button>
@@ -64,23 +77,9 @@ export default function PathFindingVisualizer(): JSX.Element {
         {placeWall ? "Remove" : "Place"} walls
       </button>
       <div className="grid">
-        {grid.map((row: Array<GridNode>, rowIdx: number) => (
-          <div key={rowIdx}>
-            {row.map((node: GridNode, nodeIdx: number) => {
-              const { position, type } = node;
-              return (
-                <Node
-                  key={nodeIdx}
-                  position={position}
-                  type={type}
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  onMouseEnter={handleMouseEnter}
-                />
-              );
-            })}
-          </div>
-        ))}
+        {grid.map((row: Array<GridNode>, rowIdx: number) =>
+          createRow(row, rowIdx)
+        )}
       </div>
     </>
   );

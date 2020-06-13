@@ -7,7 +7,7 @@ export default class BinaryHeap<T, K> {
   // stores key-value pairs
   private heap: Array<HeapItem<T, K>>;
 
-  constructor(array: Array<HeapItem<T, K>>) {
+  constructor(array: Array<HeapItem<T, K>> = []) {
     this.heap = [];
     array.forEach((node) => this.insert(node.item, node.key));
   }
@@ -17,10 +17,12 @@ export default class BinaryHeap<T, K> {
   }
 
   public popMin() {
+    const min = this.min();
     this.heap[0] = this.heap[this.size() - 1];
     this.heap.pop();
 
     if (!!this.size()) this.fixHeapDown(0);
+    return min;
   }
 
   public size(): number {
