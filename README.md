@@ -1,5 +1,8 @@
 # Pathfinding Visualizer
 
+- Inspired by Clément Mihailescu's Pathfinding Algorithm Visualizer
+- Created with React Typescript
+
 > Created by create-react-app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
