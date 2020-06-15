@@ -8,25 +8,24 @@ export interface GridNode {
   previousNode: GridNode | null;
 }
 
-export type Grid = Array<Array<GridNode>>;
+export type Grid = GridNode[][];
 
-interface SearchProps {
-  grid: Grid;
-  startNode: GridNode;
-  finishNode: GridNode;
-}
-
-export const dijkstra = (props: SearchProps): Array<GridNode> | undefined => {
-  const { grid, startNode, finishNode } = props;
-  const visitedNodesInOrder: Array<GridNode> = [];
+const dijkstra = (
+  grid: Grid,
+  startNode: GridNode,
+  finishNode: GridNode
+): GridNode[] => {
+  const visitedNodesInOrder: GridNode[] = [];
   startNode.distance = 0;
-  const unvisitedNodes: BinaryHeap<GridNode, number> = getAllNodes(grid);
   while (!!unvisitedNodes.size()) {
     const closestNode = unvisitedNodes.popMin();
     // skip if a wall is encountered
     if (closestNode.item.type === NodeType.Wall) continue;
     // couldn't find path
-    if (closestNode.key === Infinity) break;
+    if (closestNode.key === Infinity) {
+      console.log("path not found :(");
+      break;
+    }
     closestNode.item.type = NodeType.Visited;
     visitedNodesInOrder.push(closestNode.item);
     if (closestNode.item === finishNode) break;
@@ -58,5 +57,20 @@ function getUnvisitedNeighbors(node: GridNode, grid: Grid) {
   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
   if (col > 0) neighbors.push(grid[row][col - 1]);
   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter((neighbor) => neighbor.type !== NodeType.Visited);
+  return neighbors.filter(neighbor => neighbor.type !== NodeType.Visited);
 }
+
+export const getNodesInShortestPathOrder = (
+  finishNode: GridNode
+): GridNode[] => {
+  const nodesInShortestPathOrder: GridNode[] = [];
+  let currentNode: GridNode | null = finishNode;
+  while (currentNode !== null) {
+    nodesInShortestPathOrder.unshift(currentNode);
+    currentNode = currentNode.previousNode;
+  }
+
+  return nodesInShortestPathOrder;
+};
+
+export default dijkstra;

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import Node, { NodeType, Cell } from "./Node/Node";
 
 import "./PathFindingVisualizer.css";
-import { Grid, GridNode } from "./algorithms/dijkstra";
+import dijkstra, {
+  Grid,
+  GridNode,
+  getNodesInShortestPathOrder,
+} from "./algorithms/dijkstra";
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
@@ -36,6 +40,38 @@ const PathFindingVisualizer = () => {
     setGrid(getNewGridWithWallToggled(position));
   };
 
+  const animateShortestPath = (nodesInShortestPathOrder: GridNode[]) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        const { row, col } = node.position;
+        (document.getElementById(
+          `node-${row}-${col}`
+        ) as HTMLElement).className = "node-shortest-path";
+      }, 50 * i);
+    }
+  };
+  const animateDijkstra = (
+    visitedNodesInOrder: GridNode[],
+    nodesInShortestPathOrder: GridNode[]
+  ) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        const { row, col } = node.position;
+        (document.getElementById(
+          `node-${row}-${col}`
+        ) as HTMLElement).className = "node-shortest-path";
+      }, 50 * i);
+    }
+  };
+
   const getNewGridWithWallToggled = (position: Cell): Grid => {
     const { row, col } = position;
     const newGrid: Grid = grid.slice();
@@ -48,6 +84,14 @@ const PathFindingVisualizer = () => {
     return newGrid;
   };
 
+  const visualizeDijkstra = () => {
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
   const toggleWall = (row: number, col: number): NodeType | undefined => {
     if (grid[row][col].type === NodeType.Blank && placeWall)
       return NodeType.Wall;
@@ -55,7 +99,7 @@ const PathFindingVisualizer = () => {
       return NodeType.Blank;
   };
 
-  const createRow = (row: Array<GridNode>, rowIdx: number): JSX.Element => (
+  const createRow = (row: GridNode[], rowIdx: number): JSX.Element => (
     <div key={rowIdx}>
       {row.map((node: GridNode, nodeIdx: number) => (
         <Node
@@ -73,13 +117,12 @@ const PathFindingVisualizer = () => {
   return (
     <>
       <button onClick={() => setGrid(getInitialGrid)}>Clear Grid</button>
+      <button onClick={() => visualizeDijkstra()}>Visualize Dijkstra</button>
       <button onClick={() => setPlaceWall(!placeWall)}>
         {placeWall ? "Remove" : "Place"} walls
       </button>
       <div className="grid">
-        {grid.map((row: Array<GridNode>, rowIdx: number) =>
-          createRow(row, rowIdx)
-        )}
+        {grid.map((row: GridNode[], rowIdx: number) => createRow(row, rowIdx))}
       </div>
     </>
   );
@@ -88,7 +131,7 @@ const PathFindingVisualizer = () => {
 const getInitialGrid = (): Grid => {
   const grid: Grid = [];
   for (let row = 0; row < ROW_COUNT; row++) {
-    const currentRow: Array<GridNode> = [];
+    const currentRow: GridNode[] = [];
     for (let col = 0; col < COL_COUNT; col++) {
       currentRow.push(createNode(row, col));
     }
