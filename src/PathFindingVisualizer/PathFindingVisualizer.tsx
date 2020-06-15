@@ -12,7 +12,7 @@ const FINISH_NODE_COL = 35;
 const ROW_COUNT = 20;
 const COL_COUNT = 50;
 
-export default function PathFindingVisualizer(): JSX.Element {
+const PathFindingVisualizer = () => {
   const [grid, setGrid] = useState<Grid>([]);
   const [placeWall, setPlaceWall] = useState(false);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
@@ -83,7 +83,7 @@ export default function PathFindingVisualizer(): JSX.Element {
       </div>
     </>
   );
-}
+};
 
 const getInitialGrid = (): Grid => {
   const grid: Grid = [];
@@ -112,3 +112,5 @@ const createType = (row: number, col: number): NodeType => {
     return NodeType.Finish;
   return NodeType.Blank;
 };
+
+export default PathFindingVisualizer;

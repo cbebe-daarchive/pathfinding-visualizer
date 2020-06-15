@@ -37,11 +37,9 @@ export const dijkstra = (props: SearchProps): Array<GridNode> | undefined => {
 
 function getAllNodes(grid: Grid): BinaryHeap<GridNode, number> {
   const heap: BinaryHeap<GridNode, number> = new BinaryHeap();
-  for (const row of grid) {
-    for (const node of row) {
-      heap.insert(node, node.distance);
-    }
-  }
+  for (const row of grid)
+    for (const node of row) heap.insert(node, node.distance);
+
   return heap;
 }
 

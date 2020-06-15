@@ -23,7 +23,7 @@ interface NodeProps {
   onMouseEnter: (position: Cell) => void;
 }
 
-export default function Node(props: NodeProps): JSX.Element {
+const Node = (props: NodeProps) => {
   const { position, type, onMouseUp, onMouseDown, onMouseEnter } = props;
   const { row, col } = position;
   const extraClassName: string =
@@ -43,4 +43,6 @@ export default function Node(props: NodeProps): JSX.Element {
       onMouseEnter={() => onMouseEnter(position)}
     />
   );
-}
+};
+
+export default Node;
