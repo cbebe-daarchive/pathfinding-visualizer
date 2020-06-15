@@ -51,6 +51,7 @@ const PathFindingVisualizer = () => {
       }, 50 * i);
     }
   };
+
   const animateDijkstra = (
     visitedNodesInOrder: GridNode[],
     nodesInShortestPathOrder: GridNode[]
@@ -63,12 +64,12 @@ const PathFindingVisualizer = () => {
         return;
       }
       setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
+        const node = visitedNodesInOrder[i];
         const { row, col } = node.position;
         (document.getElementById(
           `node-${row}-${col}`
-        ) as HTMLElement).className = "node-shortest-path";
-      }, 50 * i);
+        ) as HTMLElement).className = "node-visited";
+      }, 10 * i);
     }
   };
 

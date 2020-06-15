@@ -1,4 +1,5 @@
-import BinaryHeap from "./minheap";
+// maybe later
+// import BinaryHeap from "./minheap";
 import { NodeType, Cell } from "../Node/Node";
 
 export interface GridNode {
@@ -15,31 +16,35 @@ const dijkstra = (
   startNode: GridNode,
   finishNode: GridNode
 ): GridNode[] => {
-  const visitedNodesInOrder: GridNode[] = [];
+  const searchTree: GridNode[] = [];
   startNode.distance = 0;
-  while (!!unvisitedNodes.size()) {
-    const closestNode = unvisitedNodes.popMin();
+  const unvisitedNodes = getAllNodes(grid);
+  while (!!unvisitedNodes.length) {
+    sortNodesByDistance(unvisitedNodes);
+    const closestNode = unvisitedNodes.shift() as GridNode;
     // skip if a wall is encountered
-    if (closestNode.item.type === NodeType.Wall) continue;
+    if (closestNode.type === NodeType.Wall) continue;
     // couldn't find path
-    if (closestNode.key === Infinity) {
+    if (closestNode.distance === Infinity) {
       console.log("path not found :(");
       break;
     }
-    closestNode.item.type = NodeType.Visited;
-    visitedNodesInOrder.push(closestNode.item);
-    if (closestNode.item === finishNode) break;
-    updateUnvisitedNeighbors(closestNode.item, grid);
+    closestNode.type = NodeType.Visited;
+    searchTree.push(closestNode);
+    if (closestNode === finishNode) break;
+    updateUnvisitedNeighbors(closestNode, grid);
   }
-  return visitedNodesInOrder;
+  return searchTree;
 };
 
-function getAllNodes(grid: Grid): BinaryHeap<GridNode, number> {
-  const heap: BinaryHeap<GridNode, number> = new BinaryHeap();
-  for (const row of grid)
-    for (const node of row) heap.insert(node, node.distance);
+function sortNodesByDistance(unvisitedNodes: GridNode[]) {
+  unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+}
 
-  return heap;
+function getAllNodes(grid: Grid): GridNode[] {
+  const nodes = [];
+  for (const row of grid) for (const node of row) nodes.push(node);
+  return nodes;
 }
 
 function updateUnvisitedNeighbors(node: GridNode, grid: Grid) {
