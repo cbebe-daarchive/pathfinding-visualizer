@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-- Inspired by Clément Mihailescu's Pathfinding Algorithm Visualizer
+- From Clément Mihailescu's Pathfinding Algorithm Visualizer
 - Created with React Typescript
 
 > Created by create-react-app
